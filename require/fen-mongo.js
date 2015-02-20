@@ -74,7 +74,7 @@ FEMongo.prototype.q = function(col, type) {
 
 	var o = {
 		__collection : mn.co(col),
-		__type : type,
+		__type : type || 'select',
 		__where : {},
 		__fields : {},
 		__options : {},
@@ -106,9 +106,13 @@ FEMongo.prototype.q = function(col, type) {
 			return this;
 		},
 
-		run : function() {
+		run : function(qtype) {
 			var self = this;
 			var for_return = self;
+
+			if(qtype) {
+				this.__type = qtype;
+			}
 
 			switch(this.__type) {
 
