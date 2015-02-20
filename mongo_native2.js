@@ -20,10 +20,10 @@ fen.mdl('mongo').setFEN(fen);
 
 fen.mdl('mongo').connect(config, config.collections, function(Mongo){
 	
-	Mongo.q('test').where({a : 'megatest',}).run('delete');
-	Mongo.q('test').fields({$set : {b : "blablabla",},}).options({multi : 1,}).run('update');
-	Mongo.q('test').what({title : "Test title",}).run('insert');
-	var cursor = Mongo.q('test').run('select');
+	Mongo.q('test','delete').where({a : 'megatest',}).run();
+	Mongo.q('test','update').fields({$set : {b : "blablabla",},}).options({multi : 1,}).run();
+	Mongo.q('test','insert').what({title : "Test title",}).run();
+	var cursor = Mongo.q('test','select').run();
 	cursor.each(function(err, row) {
 		Mongo.onE(err);
 

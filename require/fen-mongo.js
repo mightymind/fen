@@ -69,11 +69,12 @@ FEMongo.prototype.onE = function(err) {
 	}
 }
 
-FEMongo.prototype.q = function(col) {
+FEMongo.prototype.q = function(col, type) {
 	var mn = this;
 
 	var o = {
 		__collection : mn.co(col),
+		__type : type,
 		__where : {},
 		__fields : {},
 		__options : {},
@@ -105,11 +106,11 @@ FEMongo.prototype.q = function(col) {
 			return this;
 		},
 
-		run : function(type) {
+		run : function() {
 			var self = this;
 			var for_return = self;
 
-			switch(type) {
+			switch(this.__type) {
 
 				case 'select': {
 
