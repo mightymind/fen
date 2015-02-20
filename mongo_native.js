@@ -13,7 +13,7 @@ config.set('host', fen.argv['host'] || 'localhost');
 config.set('port', fen.argv['port'] || 27017);
 config.set('db', fen.argv['db'] || "test");
 
-var FEMongo = require('./require/fe-mongo');
+var FEMongo = require('./require/fen-mongo');
 
 fen.addMdl('mongo', new FEMongo());
 fen.mdl('mongo').setFEN(fen);
