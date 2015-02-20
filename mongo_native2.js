@@ -18,10 +18,18 @@ var FENMongo = require('./require/fen-mongo');
 fen.addMdl('mongo', new FENMongo());
 fen.mdl('mongo').setFEN(fen);
 
+fen.mdl('mongo').runOnConnect(function(Mongo){
+	fen.echo('OnConnect1');
+});
+
+fen.mdl('mongo').runOnConnect(function(Mongo){
+	fen.echo('OnConnect2');
+});
+
 fen.mdl('mongo').connect(config, config.collections, function(Mongo){
-	
+	/*
 	Mongo.q('test','delete').where({a : 'megatest',}).run();
-	Mongo.q('test','update').fields({$set : {b : "blablabla",},}).options({multi : 1,}).run();
+	Mongo.q('test').fields({$set : {b : "blablabla",},}).options({multi : 1,}).run('update');
 	Mongo.q('test','insert').what({title : "Test title",}).run();
 	var cursor = Mongo.q('test','select').run();
 	cursor.each(function(err, row) {
@@ -33,5 +41,5 @@ fen.mdl('mongo').connect(config, config.collections, function(Mongo){
 			//Mongo.disconnect();
 			cursor.rewind();
 		}
-	});
+	});*/
 });

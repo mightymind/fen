@@ -19,6 +19,7 @@ FEMongo.prototype.fen = {};
 FEMongo.prototype.client = {};
 FEMongo.prototype.db = {};
 FEMongo.prototype.collections = {};
+FEMongo.prototype.codeOnConnect = [];
 
 
 FEMongo.prototype.setFEN = function(fen) {
@@ -42,7 +43,16 @@ FEMongo.prototype.connect = function(config, collections, callback) {
 			for (var col in collections) {
 				mn.collections[col] = mn.db.collection(col);
 			}
-			callback(mn);
+
+			for(var i in mn.codeOnConnect) {
+				var code = mn.codeOnConnect[i];
+				code(mn);
+			}
+			mn.codeOnConnect = [];
+
+			if(callback) {
+				callback(mn);
+			}
 
 		}
 	});
@@ -167,6 +177,10 @@ FEMongo.prototype.q = function(col, type) {
 	};
 
 	return o;
+}
+
+FEMongo.prototype.runOnConnect = function(fnc) {
+	this.codeOnConnect.push(fnc);
 }
 
 
