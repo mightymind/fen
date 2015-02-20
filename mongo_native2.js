@@ -18,11 +18,11 @@ var FENMongo = require('./require/fen-mongo');
 fen.addMdl('mongo', new FENMongo());
 fen.mdl('mongo').setFEN(fen);
 
-fen.mdl('mongo').runOnConnect(function(Mongo){
+fen.mdl('mongo').runOnEvent('onConnect', function(Mongo){
 	fen.echo('OnConnect1');
 });
 
-fen.mdl('mongo').runOnConnect(function(Mongo){
+fen.mdl('mongo').runOnEvent('onConnect', function(Mongo){
 	fen.echo('OnConnect2');
 });
 
@@ -42,4 +42,17 @@ fen.mdl('mongo').connect(config, config.collections, function(Mongo){
 			cursor.rewind();
 		}
 	});*/
+	
+	Mongo.q('test','insert').what({title : "Test title",}).callback(function(err, res){
+		fen.echo('inserted');
+
+		Mongo.genEvent('onTest');
+	}).run();
+	//fen.mdl('mongo').createEvent('onTest');
+
+	Mongo.runOnEvent('onTest',function(Mongo){
+		fen.echo('disconnect');
+		Mongo.disconnect();
+	});
+
 });

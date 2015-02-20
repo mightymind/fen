@@ -19,7 +19,9 @@ FEMongo.prototype.fen = {};
 FEMongo.prototype.client = {};
 FEMongo.prototype.db = {};
 FEMongo.prototype.collections = {};
-FEMongo.prototype.codeOnConnect = [];
+FEMongo.prototype.codeOnEvent = {
+	'onConnect':[],
+};
 
 
 FEMongo.prototype.setFEN = function(fen) {
@@ -44,11 +46,7 @@ FEMongo.prototype.connect = function(config, collections, callback) {
 				mn.collections[col] = mn.db.collection(col);
 			}
 
-			for(var i in mn.codeOnConnect) {
-				var code = mn.codeOnConnect[i];
-				code(mn);
-			}
-			mn.codeOnConnect = [];
+			mn.genEvent('onConnect');
 
 			if(callback) {
 				callback(mn);
@@ -179,8 +177,30 @@ FEMongo.prototype.q = function(col, type) {
 	return o;
 }
 
-FEMongo.prototype.runOnConnect = function(fnc) {
-	this.codeOnConnect.push(fnc);
+FEMongo.prototype.runOnEvent = function(event, fnc) {
+	if(this.codeOnEvent[event]) {
+		
+	} else {
+		this.codeOnEvent[event] = [];
+	}
+	this.codeOnEvent[event].push(fnc);
+}
+
+FEMongo.prototype.createEvent = function(event) {
+	this.codeOnEvent[event] = [];
+}
+
+FEMongo.prototype.genEvent = function(event) {
+	var mn = this;
+	if(mn.codeOnEvent[event]) {
+
+		for(var i in mn.codeOnEvent[event]) {
+			var code = mn.codeOnEvent[event][i];
+			code(mn);
+			}
+		mn.codeOnEvent[event] = [];
+
+	}
 }
 
 
